@@ -1,0 +1,5 @@
+rvm 1.9.2@openlibrary
+
+if ! command -v bundle ; then
+  gem install bundler
+fi
