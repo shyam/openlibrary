@@ -5,7 +5,7 @@ DB = Sequel.connect('sqlite://db/ol.db')
 set :views, Proc.new { File.join(root, "views") }
 
 get "/" do
-  redirect to('/reserve')
+  erb :index
 end
 
 # show the reserve.erb; scan the isbn, reserve the book against a name.
