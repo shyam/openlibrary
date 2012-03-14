@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Open Library</title>
+	<link rel="stylesheet" href="/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="/css/bootstrap-responsive.min.css" />
+</head>
+<body>
+	<div class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<div class="nav-collapse">
+					<ul class="nav">
+						<% @menu_items.each do |key, menu_item| %>
+							<% path, display_name = [menu_item["path"], menu_item["display_name"]] %>
+							<li <%= request.path_info == path ? 'class="active"' : '' %>>
+								<a href="<%= path %>">
+									<%= display_name %>
+								</a>
+							</li>
+						<% end %>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<% yield_content :content %>
+	</div>
+</body>
+</html>
