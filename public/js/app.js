@@ -7,6 +7,7 @@ var Reservation = Backbone.Model.extend({
     this._userDom = $("user");
     this._confirmationDom = $("confirmation");
     this._bindUserInputs();
+    this.focus(this._bookDom);
   },
   defaults: {
     user: "",
@@ -14,17 +15,20 @@ var Reservation = Backbone.Model.extend({
   },
   _bindUserInputs: function() {
     $$("input.barcode").each(function(element) {
-      element.observe("blur", function(e){
+      element.observe("keypress", function(e){
         element = e.element();
-        this.set(element.readAttribute("data-input-type"), element.value);
+        if (e.keyCode == 13)
+          this.set(element.readAttribute("data-input-type"), element.value);
       }.bind(this));
     }, this);
   },
   _highlight: function(section) {
     section.highlight({startcolor: '#ffff99', endcolor: '#EEEEEE', queue: 'end', afterFinish: function(){
-      console.log(section.select("input"));
-      section.select("input").all(function(element) { element.focus(); });
-    }});
+      this.focus(section);
+    }.bind(this)});
+  },
+  focus: function(section) {
+    section.select("input").all(function(element) { element.focus(); });
   },
   validate: function(attrs) {
     if (attrs.isbn && !isbnRegex.test(attrs.isbn))
