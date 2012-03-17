@@ -1,6 +1,6 @@
-require "sinatra"
-require "sequel"
-require "sinatra/content_for"
+require 'sinatra'
+require 'sinatra/content_for'
+require 'sequel'
 require 'yaml'
 
 DB = Sequel.connect('sqlite://db/ol.db')

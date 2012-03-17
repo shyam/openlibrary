@@ -4,6 +4,9 @@
 	<title>Open Library</title>
 	<link rel="stylesheet" href="/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="/css/bootstrap-responsive.min.css" />
+	<link rel="stylesheet" href="/css/100s.css" />
+	<link rel="stylesheet" href="/css/app.css" />
+	<% yield_content :javascript %>
 </head>
 <body>
 	<div class="navbar navbar-fixed-top">
@@ -24,7 +27,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="container">
+	<div class="page container">
 		<% yield_content :content %>
 	</div>
 </body>

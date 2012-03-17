@@ -1,0 +1,20 @@
+.page.container {
+  margin-top: 40px;
+  position: relative;
+}
+
+.page.container .hero-unit#book, .page.container .hero-unit#user {
+  position: absolute;
+  z-index: -1;
+}
+
+.page.container .input {
+  padding: 10px 0px;
+  text-align: center;
+}
+
+.page.container .input .barcode {
+  font-size: 40px;
+  height: 40px;
+  width: 290px;
+}
