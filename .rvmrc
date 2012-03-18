@@ -1,4 +1,4 @@
-rvm 1.9.2@openlibrary
+rvm 1.9.2-p290@openlibrary
 
 if ! command -v bundle ; then
   gem install bundler
