@@ -3,7 +3,8 @@ require 'sinatra'
 require 'sinatra/content_for'
 require 'yaml'
 
-set :views, Proc.new { File.join(root, "views") }
+set :environment, :production
+set :logging, true
 
 get "/" do
 	with_base_layout :index
