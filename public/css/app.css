@@ -3,7 +3,7 @@
   position: relative;
 }
 
-.page.container .hero-unit#book, .page.container .hero-unit#user {
+.page.container .hero-unit#book, .page.container .hero-unit#user, .page.container .hero-unit#confirmation {
   position: absolute;
   z-index: -1;
 }
@@ -17,4 +17,8 @@
   font-size: 40px;
   height: 40px;
   width: 290px;
+}
+
+.page.container .hero-unit#confirmation .wait{
+  float: right;
 }
