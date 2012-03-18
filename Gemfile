@@ -1,6 +1,9 @@
 source 'http://rubygems.org'
 
 gem 'sinatra'
-gem 'sinatra-contrib'
 gem 'rake'
 gem 'unicorn'
+gem 'sinatra-content-for'
+gem 'sequel'
+gem 'sqlite3'
+gem 'rake'
