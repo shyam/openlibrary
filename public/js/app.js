@@ -33,7 +33,7 @@ var ReservationView = Backbone.View.extend({
   },
   save: function(event) {
     element = event.target;
-    if (event.keyCode == 13) this.model.set($(element).attr("data-input-type"), element.value);
+    if (event.keyCode == 13 && element.value != "") this.model.set($(element).attr("data-input-type"), element.value);
   },
   hide: function() {
     $(this.el).fadeOut();
@@ -76,7 +76,7 @@ var ConfirmationView = ReservationView.extend({
     if (waitTime >= maxWaitTime) {
       waitTime = 0;
       clearInterval(this.timerId);
-      this.model.read();
+      this.model.save();
       this._updateWaitTime(maxWaitTime);
     }
   },
@@ -100,4 +100,22 @@ function newReservation() {
   reservation.on("error", function(model, error){ smoke.signal(error); });
 };
 
+function saveReservation() {
+}
+
+function destroyReservation (argument) {
+  bookView.undelegateEvents();
+  userView.undelegateEvents();
+  confirmationView.undelegateEvents();
+  reservation = null;
+  bookView = null;
+  confirmationView = null;
+};
+
 $(function() { newReservation(); });
+
+Backbone.sync = function(method, model) {
+  saveReservation(model);
+  destroyReservation();
+  newReservation();
+};
