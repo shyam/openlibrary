@@ -1,42 +1,69 @@
 <% content_for :javascript do %>
-  <script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
-  <script type="text/javascript" src="/js/underscore-min.js"></script>
-  <script type="text/javascript" src="/js/backbone-min.js"></script>
-  <script type="text/javascript" src="/js/smoke.min.js"></script>
-  <script type="text/javascript" src="/js/app.js"></script>
+    <script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="/js/underscore-min.js"></script>
+    <script type="text/javascript" src="/js/backbone-min.js"></script>
+    <script type="text/javascript" src="/js/smoke.min.js"></script>
+    <script type="text/javascript" src="/js/app.js"></script>
 <% end %>
 
 <% content_for :content do %>
-  <div class="page-header">
-    <h1>Open Library</h1>
-  </div>
-	<div class="hero-unit" id="book">
-    <h1>Scan</h1>
-    <p>
-      The Open Library application is catalogued using the International Standard Book Number (ISBN) assigned to each edition and variation (except reprintings) of a book. Hold the book in such a way that the scanner is able to read the ISBN behind the book. The application can recognize the ISBN and present the details of the book. 
-    </p>
-    <div class="input">
-      <input type="text" class="barcode" maxlength="13" data-input-type="isbn" />
+    <div class="page-header">
+      <h1>Open Library</h1>
     </div>
-	</div>
-  <div class="hero-unit" id="user" style="display:none">
-    <h1>Tell me who you are</h1>
-    <p>
-     Hold your ID Card (with barcoded employee ID) in such a way that the scanner is able to read the barcode and recognize you.  
-    </p>
-    <div class="input">
-      <input type="text" class="barcode" maxlength="5" data-input-type="user" />
+
+    <div class="row">
+      <div class="span6">
+        <div class="hero-unit">
+          <div class="workflow">
+            <div class="step-no">1</div>
+            <img src="img/green-circle.png"/>
+            <span class="step-text">Scan Book</span>
+          </div>
+          <div>
+            <img class="placeholder" src="img/placeholder.png"/>
+          </div>
+          <div id="book">
+            <div class="input">
+              <input type="text" class="barcode" maxlength="13" data-input-type="isbn"/>
+            </div>
+          </div>
+          <div class="hero-unit book-name">
+            Don't Make Me Think - Steve Krug
+          </div>
+        </div>
+      </div>
+      <div class="span6">
+        <div class="hero-unit">
+          <div class="workflow">
+            <div class="step-no">2</div>
+            <img src="img/gray-circle.png"/>
+            <span class="step-text">Scan Employee ID</span>
+          </div>
+          <div>
+            <img class="placeholder" src="img/placeholder.png"/>
+          </div>
+          <div id="user">
+            <div class="input">
+              <input type="text" class="barcode" maxlength="5" data-input-type="user"/>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="hero-unit" id="confirmation" style="display:none">
-    <div class="wait">
-      <h2 id="wait">10</h2>
+
+
+    <div class="hero-unit" id="confirmation" style="display:none">
+      <div class="wait">
+        <h2 id="wait">10</h2>
+      </div>
+      <h1>Thank you!</h1>
+
+      <p>
+        Thats it Folks! It is reserved. The application will remind you every 2 weeks via email to remind that you about
+        this reservation.
+      </p>
+
+      <div class="input">
+      </div>
     </div>
-    <h1>Thank you!</h1>
-    <p>
-     Thats it Folks! It is reserved. The application will remind you every 2 weeks via email to remind that you about this reservation. 
-    </p>
-    <div class="input">
-    </div>
-  </div>
 <% end %>
