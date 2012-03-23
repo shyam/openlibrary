@@ -48,7 +48,17 @@ var BookView = ReservationView.extend({
   initialize: function(options) {
     this.setElement($("#book"));
     this.model.on("read", $.proxy(this.show, this));
-    this.model.on("change:isbn", $.proxy(this.hide, this));
+    this.model.on("change:isbn", $.proxy(this.getBookInfo, this));
+  },
+  getBookInfo: function() {
+    bookXhr = $.getJSON("books/"+this.model.get("isbn"));
+    bookXhr.success($.proxy(this.updateBookInfo, this));
+    //this.hide();
+  },
+  updateBookInfo: function(data) {
+    console.log(data.title);
+    console.log($(this.el).find(".book-name"));
+    $(this.el).find(".book-name").html(data.title);
   }
 });
 
