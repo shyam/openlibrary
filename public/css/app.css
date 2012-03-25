@@ -1,14 +1,9 @@
-.page.container {
-  margin-top: 40px;
-  position: relative;
-}
+.clear { clear: both; }
 
-.page.container .hero-unit#book, .page.container .hero-unit#user, .page.container .hero-unit#confirmation {
-  position: absolute;
-  z-index: -1;
-}
+.page.container .hero-unit#book, .page.container .hero-unit#user, .page.container .hero-unit#confirmation { position: absolute; }
 
 .page.container .input {
+  opacity: 0;
   padding: 10px 0px;
   text-align: center;
 }
@@ -19,6 +14,4 @@
   width: 290px;
 }
 
-.page.container .hero-unit#confirmation .wait{
-  float: right;
-}
+.page.container .reservation { margin-top: 60px; position: relative; }

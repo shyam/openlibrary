@@ -5,8 +5,8 @@ var waitTime = 0;
 
 var Reservation = Backbone.Model.extend({
   defaults: {
-    user: "",
-    isbn: ""
+    user: null,
+    isbn: null
   },
   validate: function(attrs) {
     if (attrs.isbn && !isbnRegex.test(attrs.isbn))
@@ -20,112 +20,77 @@ var Reservation = Backbone.Model.extend({
 });
 
 var ReservationView = Backbone.View.extend({
+  initialize: function(options) {
+    this.setElement($(".reservation:first"));
+    sections = $(this.el).find(".section");
+    this.bookEl = this.getElement(sections, "book");
+    this.userEl = this.getElement(sections, "user");
+    this.confirmationEl = this.getElement(sections, "confirmation");
+    this.model.on("read", $.proxy(this.reset, this));
+    this.model.on("change:isbn", $.proxy(this.promptUserDetails, this));
+    this.model.on("change:user", $.proxy(this.showConfirmation, this));
+    this._alwaysFocusInput();
+  },
+  getElement: function(elements, cssSelector) {
+    return _.find(elements, function(element) { return $(element).hasClass(cssSelector); });
+  },
   events: {
-    "keypress input.barcode": "save"
-  },
-  _highlight: function() {
-    //section.highlight({startcolor: '#ffff99', endcolor: '#EEEEEE', queue: 'end'});
-  },
-  focus: function() {
-    barcodeInput = $(this.el).find("input.barcode");
-    barcodeInput.val("");
-    barcodeInput.focus();
+    "change input.barcode": "save"
   },
   save: function(event) {
-    element = event.target;
-    if (event.keyCode == 13 && element.value != "") this.model.set($(element).attr("data-input-type"), element.value);
+    var element = event.target;
+    this.model.set($(element).attr("data-input-type"), element.value);
   },
-  hide: function() {
-    $(this.el).fadeOut();
+  reset: function() {
+    this.model.set({isbn: null, user: null});
+    $(this.el).find("input.barcode").val("");
+    this.promputBookDetails();
+    this._updateWaitTime(100);
+    clearInterval(this.timerId);
+    waitTime = 0;
   },
-  show: function() {
-    $(this.el).fadeIn();
-    this.focus();
-  }
-})
-
-var BookView = ReservationView.extend({
-  initialize: function(options) {
-    this.setElement($("#book"));
-    this.model.on("read", $.proxy(this.show, this));
-    this.model.on("change:isbn", $.proxy(this.getBookInfo, this));
+  promputBookDetails: function() {
+    this.focus(this.bookEl);
   },
-  getBookInfo: function() {
-    bookXhr = $.getJSON("books/"+this.model.get("isbn"));
-    bookXhr.success($.proxy(this.updateBookInfo, this));
-    //this.hide();
+  promptUserDetails: function() {
+    this.focus(this.userEl);
   },
-  updateBookInfo: function(data) {
-    console.log(data.title);
-    console.log($(this.el).find(".book-name"));
-    $(this.el).find(".book-name").html(data.title);
-  }
-});
-
-var UserView = ReservationView.extend({
-  initialize: function(options) {
-    this.setElement($("#user"));
-    this.model.on("change:user", $.proxy(this.hide, this));
-    this.model.on("change:isbn", $.proxy(this.show, this));
-  }
-})
-
-var ConfirmationView = ReservationView.extend({
-  initialize: function(options) {
-    this.setElement($("#confirmation"));
-    this.model.on("change:user", $.proxy(this.startTimer, this));
-    this.model.on("read", $.proxy(this.hide, this));
-    this._updateWaitTime(maxWaitTime);
+  showConfirmation: function() {
+    this.focus(this.confirmationEl);
+    this.startTimer();
+  },
+  focus: function(section) {
+    var deFocusedElements = _.reject([this.userEl, this.bookEl, this.confirmationEl], function(element) { return element == section });
+    _.each(deFocusedElements, $.proxy(function(element) { $(element).hide(); }, this));
+    $(section).fadeIn();
+    $(section).find("input.barcode").focus();
+  },
+  startTimer: function() {
+    this.timerId = setInterval($.proxy(this._updateTime, this), 100);
   },
   _updateWaitTime: function(value) {
-    $(this.el).find("#wait").html(value)
+    $(this.confirmationEl).find(".progress .bar").width(value+'%');
   },
   _updateTime: function() {
     waitTime += 1;
-    this._updateWaitTime(maxWaitTime - waitTime);
-    if (waitTime >= maxWaitTime) {
-      waitTime = 0;
+    this._updateWaitTime(100 - waitTime);
+    if (waitTime >= 105) {
       clearInterval(this.timerId);
-      this.model.save();
-      this._updateWaitTime(maxWaitTime);
+      this.reset();
     }
   },
-  startTimer: function() {
-    this.show();
-    this.timerId = setInterval($.proxy(this._updateTime, this), 1000);
+  _alwaysFocusInput: function() {
+    $('body').click(function(element) {
+      $(".reservation .section:visible").find("input.barcode").focus();
+    });
   }
-})
-
-var reservation;
-var bookView;
-var userView;
-var confirmationView;
+});
 
 function newReservation() {
   reservation = new Reservation();
-  bookView = new BookView({model: reservation});
-  userView = new UserView({model: reservation});
-  confirmationView = new ConfirmationView({model: reservation});
+  view = new ReservationView({model: reservation})
   reservation.read();
   reservation.on("error", function(model, error){ smoke.signal(error); });
 };
 
-function saveReservation() {
-}
-
-function destroyReservation (argument) {
-  bookView.undelegateEvents();
-  userView.undelegateEvents();
-  confirmationView.undelegateEvents();
-  reservation = null;
-  bookView = null;
-  confirmationView = null;
-};
-
 $(function() { newReservation(); });
-
-Backbone.sync = function(method, model) {
-  saveReservation(model);
-  destroyReservation();
-  newReservation();
-};

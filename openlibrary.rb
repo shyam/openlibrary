@@ -8,7 +8,7 @@ set :environment, :production
 set :logging, true
 
 get '/' do
-	with_base_layout :index
+	with_plain_layout :index
 end
 
 get '/help' do
@@ -24,5 +24,9 @@ end
 
 def with_base_layout template, options={}
 	@menu_items = YAML::load(File.read(File.expand_path('config/menu.yml','.')))
-	erb template, options.merge(:layout => :'common/base_layout')
+	erb template, options.merge(:layout => :'layout/base')
+end
+
+def with_plain_layout template, options={}
+  erb template, options.merge(:layout => :'layout/plain')
 end
