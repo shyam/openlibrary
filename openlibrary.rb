@@ -11,10 +11,6 @@ get '/' do
 	with_plain_layout :index
 end
 
-get '/help' do
-	with_base_layout :help
-end
-
 get '/books/:isbn' do
   content_type :json
   book = Book.first(:isbn => params[:isbn])

@@ -1,6 +1,15 @@
 .clear { clear: both; }
 
-.page.container .hero-unit#book, .page.container .hero-unit#user, .page.container .hero-unit#confirmation { position: absolute; }
+.open-library .brand { padding-right: 5px;}
+.brand:after { content: " -";}
+
+.tag-line {
+  display: inline-block;
+  padding-top: 10px;
+}
+
+.page.container .hero-unit.section { height: 230px; }
+/*.page.container .hero-unit.book, .page.container .hero-unit.user, .page.container .hero-unit.confirmation { position: absolute; }*/
 
 .page.container .input {
   opacity: 0;
@@ -15,3 +24,33 @@
 }
 
 .page.container .reservation { margin-top: 60px; position: relative; }
+
+.help h2 { line-height: 72px; }
+
+.help .title .icon {
+  float: right;
+  height: 72px;
+  width: 72px;
+}
+
+.help .active .title .icon {
+  background: url("../img/barcode.png") no-repeat right top;
+  -moz-animation: changeOpacity 1s;
+  -moz-animation-iteration-count:infinite;
+}
+
+@-moz-keyframes changeOpacity {
+  0%   {opacity:1;}
+  10%  {opacity:.9;}
+  20%  {opacity:.8;}
+  30%  {opacity:.7;}
+  40%  {opacity:.6;}
+  50%  {opacity:.5;}
+  60%  {opacity:.4;}
+  70%  {opacity:.3;}
+  80%  {opacity:.2;}
+  90%  {opacity:.1;}
+}
+
+.help .done .title .icon { background: url("../img/tick.png") no-repeat right top; }
+.help .confirmation.active .title .icon { background: url("../img/clock.png") no-repeat right top; }

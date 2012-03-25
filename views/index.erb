@@ -9,8 +9,8 @@
 <% content_for :content do %>
 
   <div class="reservation">
-  	<div class="hero-unit section book">
-      <h1>Scan</h1>
+      <div class="hero-unit section book" data-section-name="book">
+      <h1>Pick &amp; Scan</h1>
       <p>
         The Open Library application is catalogued using the International Standard Book Number (ISBN) assigned to each edition and variation (except reprintings) of a book. Hold the book in such a way that the scanner is able to read the ISBN behind the book. The application can recognize the ISBN and present the details of the book. 
       </p>
@@ -19,7 +19,7 @@
       </div>
   	</div>
 
-    <div class="hero-unit section user" style="display:none">
+    <div class="hero-unit section user" data-section-name="user" style="display:none">
       <h1>Tell me who you are</h1>
       <p>
        Hold your ID Card (with barcoded employee ID) in such a way that the scanner is able to read the barcode and recognize you.  
@@ -29,7 +29,7 @@
       </div>
     </div>
 
-    <div class="hero-unit section confirmation" style="display:none">
+    <div class="hero-unit section confirmation" data-section-name="confirmation" style="display:none">
       <div class="wait">
         <div class="progress progress-striped active">
           <div class="bar" style="width: 100%;"></div>
@@ -40,7 +40,39 @@
        Thats it Folks! It is reserved. The application will remind you every 2 weeks via email to remind that you about this reservation. 
       </p>
     </div>
+
+    <div class="row help">
+      <div class="span4 notes book">
+        <div class="title">
+          <div class="icon"></div>
+          <h2>Pick &amp; Scan</h2>
+        </div>
+        <p>
+         If you see anything that looks appealing, pick it up and read the back of the book. Skim over the back of the book or the inside flap, wherever the summary is. If that holds your attention, read the first page or so. If it still holds your attention, then it's probably a good book for you. The subject might be interesting to you, but the writing style can be key to enjoying it. If it looks interesting, proceed to scanning the book. 
+        </p>
+      </div>
+      <div class="span4 notes user">
+        <div class="title">
+          <div class="icon"></div>
+          <h2>Authorize</h2>
+        </div>
+        <p>
+          The Open Library application is catalogued using the International Standard Book Number (ISBN) assigned to each edition and variation (except reprintings) of a book. Hold the book in such a way that the scanner is able to read the ISBN behind the book. The application can recognize the ISBN and present the details of the book. Similarly, hold your ID Card (with barcoded employee ID) to recognize you. 
+        </p>
+      </div>
+      <div class="span4 notes confirmation">
+        <div class="title">
+          <div class="icon"></div>
+          <h2>Go</h2>
+        </div>
+        <p>
+          Thats it Folks! It is reserved. The application will remind you every 2 weeks via email to remind that you about this reservation.
+        </p>
+      </div>
+    </div>
+
     <div class="clear"></div>
+
   </div>
 
 <% end %>
