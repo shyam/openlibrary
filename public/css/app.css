@@ -1,7 +1,7 @@
 .clear { clear: both; }
 
 .open-library .brand { padding-right: 5px;}
-.brand:after { content: " -";}
+/*.brand:after { content: " -";}*/
 
 .tag-line {
   display: inline-block;
