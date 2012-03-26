@@ -23,6 +23,12 @@
   width: 290px;
 }
 
+.footer {
+  border-top: 1px solid #E5E5E5;
+  padding: 35px 0px;
+  text-align: center;
+}
+
 .page.container .reservation { margin-top: 60px; position: relative; }
 
 .help h2 { line-height: 72px; }
