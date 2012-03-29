@@ -8,7 +8,7 @@
   padding-top: 10px;
 }
 
-.page.container .hero-unit.section { height: 230px; }
+.page.container .hero-unit.section { height: 180px; }
 /*.page.container .hero-unit.book, .page.container .hero-unit.user, .page.container .hero-unit.confirmation { position: absolute; }*/
 
 .page.container .input {
@@ -25,7 +25,8 @@
 
 .footer {
   border-top: 1px solid #E5E5E5;
-  padding: 35px 0px;
+  margin: 20px;
+  padding: 15px 0px;
   text-align: center;
 }
 
@@ -39,9 +40,30 @@
   width: 72px;
 }
 
+.help .title { padding: 0px 10px;}
+.help p { padding: 10px; }
+
+.help .notes {
+  border: solid 1px #E5E5E5;
+  border-radius: 6px 6px 6px 6px;
+  height: 230px;
+  opacity: 0.3;
+  width: 368px;
+}
+
+.help .notes.active, .help .notes.done { opacity: 1; }
+
+.help .notes.active {
+  -moz-animation: opaque 1s;
+}
+
+.help .notes .title {
+  background-color: #EEEEEE;
+}
+
 .help .active .title .icon {
   background: url("../img/barcode.png") no-repeat right top;
-  -moz-animation: changeOpacity 1s;
+  -moz-animation: changeOpacity 2s;
   -moz-animation-iteration-count:infinite;
 }
 
@@ -56,6 +78,19 @@
   70%  {opacity:.3;}
   80%  {opacity:.2;}
   90%  {opacity:.1;}
+}
+
+@-moz-keyframes opaque {
+  0%   {opacity:.1;}
+  10%  {opacity:.2;}
+  20%  {opacity:.3;}
+  30%  {opacity:.4;}
+  40%  {opacity:.5;}
+  50%  {opacity:.6;}
+  60%  {opacity:.7;}
+  70%  {opacity:.8;}
+  80%  {opacity:.9;}
+  90%  {opacity:1;}
 }
 
 .help .done .title .icon { background: url("../img/tick.png") no-repeat right top; }
