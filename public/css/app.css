@@ -1,7 +1,7 @@
 .clear { clear: both; }
 
 .open-library .brand { padding-right: 5px;}
-/*.brand:after { content: " -";}*/
+.brand:after { content: " -";}
 
 .tag-line {
   display: inline-block;
@@ -9,7 +9,6 @@
 }
 
 .page.container .hero-unit.section { height: 180px; }
-/*.page.container .hero-unit.book, .page.container .hero-unit.user, .page.container .hero-unit.confirmation { position: absolute; }*/
 
 .page.container .input {
   opacity: 0;
@@ -25,8 +24,7 @@
 
 .footer {
   border-top: 1px solid #E5E5E5;
-  margin: 20px;
-  padding: 15px 0px;
+  padding: 35px 0px;
   text-align: center;
 }
 
@@ -34,36 +32,24 @@
 
 .help h2 { line-height: 72px; }
 
+.help .notes { opacity: 0.3; }
+.help .notes.active, .help .notes.done { opacity: 1; }
+.help .notes.active { -moz-animation: opaque 1s; }
+
+.help .notes .well {
+  height: 200px;
+  padding: 10px 19px;
+}
+
 .help .title .icon {
   float: right;
   height: 72px;
   width: 72px;
 }
 
-.help .title { padding: 0px 10px;}
-.help p { padding: 10px; }
-
-.help .notes {
-  border: solid 1px #E5E5E5;
-  border-radius: 6px 6px 6px 6px;
-  height: 230px;
-  opacity: 0.3;
-  width: 368px;
-}
-
-.help .notes.active, .help .notes.done { opacity: 1; }
-
-.help .notes.active {
-  -moz-animation: opaque 1s;
-}
-
-.help .notes .title {
-  background-color: #EEEEEE;
-}
-
 .help .active .title .icon {
   background: url("../img/barcode.png") no-repeat right top;
-  -moz-animation: changeOpacity 2s;
+  -moz-animation: changeOpacity 1s;
   -moz-animation-iteration-count:infinite;
 }
 
