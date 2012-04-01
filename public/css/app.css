@@ -8,6 +8,13 @@
   padding-top: 10px;
 }
 
+.page.container .alert {
+  position: fixed;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+
 .page.container .hero-unit.section { height: 180px; }
 
 .page.container .input {
@@ -28,7 +35,7 @@
   text-align: center;
 }
 
-.page.container .reservation { margin-top: 60px; position: relative; }
+.page.container { margin-top: 60px; }
 
 .help h2 { line-height: 72px; }
 

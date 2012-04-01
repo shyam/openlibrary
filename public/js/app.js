@@ -11,14 +11,29 @@ var Reservation = Backbone.Model.extend({
   },
   validate: function(attrs) {
     if (attrs.isbn && !isbnRegex.test(attrs.isbn))
-      return "Invalid ISBN";
+      return "Sorry! I am not able to recognize the book";
     else if (attrs.user && !userRegex.test(attrs.user))
-      return "Invalid EmployeeID";
+      return "Sorry! I don't know whom you are, please contact admin.";
   },
   read: function() {
     this.trigger("read");
   }
 });
+
+var AlertView = Backbone.View.extend({
+  initialize: function(options) {
+    this.setElement($(".alert"));
+    $(this.el).hide();
+    this.model.on("error", $.proxy(this.showAlert, this));
+    this.model.on("change", $.proxy(this.hideAlert, this));
+  },
+  showAlert: function(model, error) {
+    $(this.el).fadeIn().html(error);
+  },
+  hideAlert: function() {
+    $(this.el).fadeOut();
+  }
+})
 
 var ReservationView = Backbone.View.extend({
   initialize: function(options) {
@@ -28,6 +43,7 @@ var ReservationView = Backbone.View.extend({
     this.userEl = this._getElement(sections, "user");
     this.confirmationEl = this._getElement(sections, "confirmation");
     this.model.on("read", $.proxy(this.reset, this));
+    this.model.on("error", $.proxy(this.clearInput, this));
     this.model.on("change:isbn", $.proxy(this.promptUserDetails, this));
     this.model.on("change:user", $.proxy(this.showConfirmation, this));
     this._alwaysFocusInput();
@@ -69,6 +85,10 @@ var ReservationView = Backbone.View.extend({
   startTimer: function() {
     this.timerId = setInterval($.proxy(this._updateTime, this), 100);
   },
+  clearInput: function() {
+    var currentSection = $(this.el).find('.section:visible');
+    currentSection.find("input.barcode").val("");
+  },
   _getElement: function(elements, cssSelector) {
     return _.find(elements, function(element) { return $(element).hasClass(cssSelector); });
   },
@@ -100,8 +120,8 @@ var ReservationView = Backbone.View.extend({
 function newReservation() {
   reservation = new Reservation();
   view = new ReservationView({model: reservation});
+  alert = new AlertView({model: reservation});
   reservation.read();
-  reservation.on("error", function(model, error){ smoke.signal(error); });
 };
 
 $(function() { newReservation(); });
