@@ -5,18 +5,28 @@ var waitTime = 0;
 var highlightClassNames = {'book': ['active',null,null], 'user': ['done','active',null], 'confirmation': ['done', 'done', 'active']};
 
 var Reservation = Backbone.Model.extend({
+  errors: {
+    isbn: "Sorry! I am not able to recognize the book",
+    user: "Sorry! I don't know whom you are, please contact admin."
+  },
   defaults: {
     user: null,
     isbn: null
   },
   validate: function(attrs) {
     if (attrs.isbn && !isbnRegex.test(attrs.isbn))
-      return "Sorry! I am not able to recognize the book";
+      return this.errors.isbn;
     else if (attrs.user && !userRegex.test(attrs.user))
-      return "Sorry! I don't know whom you are, please contact admin.";
+      return this.errors.user;
   },
   read: function() {
     this.trigger("read");
+  },
+  userNotValid: function() {
+    this.trigger("error", this, this.errors.user);
+  },
+  bookNotValid: function() {
+    this.trigger("error", this, this.errors.isbn);
   }
 });
 
@@ -38,14 +48,16 @@ var AlertView = Backbone.View.extend({
 var ReservationView = Backbone.View.extend({
   initialize: function(options) {
     this.setElement($(".reservation:first"));
+    this._bookInfo = $(this.el).find(".book-info");
+    this._userInfo = $(this.el).find(".user-info")
     sections = $(this.el).find(".section");
     this.bookEl = this._getElement(sections, "book");
     this.userEl = this._getElement(sections, "user");
     this.confirmationEl = this._getElement(sections, "confirmation");
     this.model.on("read", $.proxy(this.reset, this));
     this.model.on("error", $.proxy(this.clearInput, this));
-    this.model.on("change:isbn", $.proxy(this.promptUserDetails, this));
-    this.model.on("change:user", $.proxy(this.showConfirmation, this));
+    this.model.on("change:isbn", $.proxy(this.getBookDetails, this));
+    this.model.on("change:user", $.proxy(this.getUserDetails, this));
     this._alwaysFocusInput();
   },
   events: {
@@ -67,9 +79,27 @@ var ReservationView = Backbone.View.extend({
     this.focus(this.bookEl);
     this._highlightHelp();
   },
+  getBookDetails: function(model, isbn) {
+    if(!isbn) return;
+    url = '/books/'+isbn;
+    bookXhr = $.getJSON(url, $.proxy(function(data) {
+      this._updateBookInfo(data);
+      this.promptUserDetails();
+    }, this));
+    bookXhr.error($.proxy(function() { this.model.bookNotValid(); }, this));
+  },
   promptUserDetails: function() {
     this.focus(this.userEl);
     this._highlightHelp();
+  },
+  getUserDetails: function(model, employee_id) {
+    if(!employee_id) return;
+    url = '/users/'+employee_id;
+    userXhr = $.getJSON(url, $.proxy(function(data){
+      this._updateUserInfo(data);
+      this.showConfirmation();
+    }, this));
+    userXhr.error($.proxy(function() { this.model.userNotValid(); }, this));
   },
   showConfirmation: function() {
     this.focus(this.confirmationEl);
@@ -85,14 +115,7 @@ var ReservationView = Backbone.View.extend({
   startTimer: function() {
     this.timerId = setInterval($.proxy(this._updateTime, this), 100);
   },
-  clearInput: function() {
-    var currentSection = $(this.el).find('.section:visible');
-    currentSection.find("input.barcode").val("");
-  },
-  _getElement: function(elements, cssSelector) {
-    return _.find(elements, function(element) { return $(element).hasClass(cssSelector); });
-  },
-  _updateWaitTime: function(value) {
+    _updateWaitTime: function(value) {
     $(this.confirmationEl).find(".progress .bar").width(value+'%');
   },
   _updateTime: function() {
@@ -102,6 +125,20 @@ var ReservationView = Backbone.View.extend({
       clearInterval(this.timerId);
       this.reset();
     }
+  },
+  clearInput: function() {
+    var currentSection = $(this.el).find('.section:visible');
+    currentSection.find("input.barcode").val("");
+  },
+  _updateUserInfo: function(user) {
+    this._userInfo.find(".name").html(user.first_name + ' ' + user.last_name);
+  },
+  _updateBookInfo: function(book) {
+    this._bookInfo.find(".title").html(book.title);
+    this._bookInfo.find(".author").html(book.author);
+  },
+  _getElement: function(elements, cssSelector) {
+    return _.find(elements, function(element) { return $(element).hasClass(cssSelector); });
   },
   _alwaysFocusInput: function() {
     $('body').click(function(element) {

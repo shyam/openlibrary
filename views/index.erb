@@ -23,13 +23,21 @@
   	</div>
 
     <div class="hero-unit section user" data-section-name="user" style="display:none">
-      <h1>Tell me who you are</h1>
-      <p>
-       Hold your ID Card (with barcoded employee ID) in such a way that the scanner is able to read the barcode and recognize you.  
-      </p>
+      <div class="instruction">
+        <h1>Tell me who you are</h1>
+        <p>
+         Hold your ID Card (with barcoded employee ID) in such a way that the scanner is able to read the barcode and recognize you.  
+        </p>
+      </div>   
+      <div class="book-info">
+        <h2>You are holding the following book:</h2>
+        <h3 class="title"></h2>
+        <h3 class="author"></h3>
+      </div>
       <div class="input">
         <input type="text" class="barcode" maxlength="5" data-input-type="user" />
       </div>
+      <div class="clear"></div>
     </div>
 
     <div class="hero-unit section confirmation" data-section-name="confirmation" style="display:none">
@@ -38,9 +46,11 @@
           <div class="bar" style="width: 100%;"></div>
         </div>
       </div>
-      <h1>Thank you!</h1>
-      <p>
-       Thats it Folks! It is reserved. We will remind you every week about this reservation.
+      <h1>
+        Thank you!
+      </h1>
+      <p class="user-info">
+       Thats it <span class="name"></span>! It is reserved. We will remind you every week about this reservation.
       </p>
     </div>
 

@@ -18,6 +18,13 @@ get '/books/:isbn' do
   book.to_json
 end
 
+get '/users/:employee_id' do
+  content_type :json
+  user = User.first(:employee_id => params[:employee_id]);
+  not_found and return if user.nil?
+  user.to_json
+end
+
 def with_base_layout template, options={}
 	@menu_items = YAML::load(File.read(File.expand_path('config/menu.yml','.')))
 	erb template, options.merge(:layout => :'layout/base')

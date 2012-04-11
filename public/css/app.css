@@ -23,6 +23,24 @@
   text-align: center;
 }
 
+.book-info {
+  padding-top: 20px;
+  border-top: solid 1px black;
+}
+
+.book-info .title:before, .book-info .author:before {
+  display: inline-block;
+  width: 80px;
+}
+
+.book-info .title:before {
+  content: "Title :";
+}
+
+.book-info .author:before {
+  content: "Author :";
+}
+
 .page.container .input .barcode {
   font-size: 40px;
   height: 40px;
