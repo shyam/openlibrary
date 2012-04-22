@@ -1,2 +1,4 @@
 issued: 'You can take the book along with you, please return the book as soon as you are done with it'
 returned: 'You can now put the book where it belongs'
+user_review: 'is the last person who read this book, contact him/her for more information/review about it.'
+first_person: 'According to my knowledge you will be the first one to read this book from this library. Enjoy your reading'

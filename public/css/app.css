@@ -42,6 +42,7 @@
 }
 
 .book-info img { float: right; }
+.book-info p { padding-top: 10px;}
 
 .page.container .input .barcode {
   font-size: 40px;

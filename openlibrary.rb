@@ -16,6 +16,8 @@ get '/books/:isbn' do
   content_type :json
   @book = Book.first(:isbn => params[:isbn])
   not_found and return if @book.nil?
+  @reservation = Reservation.last(:book => @book)
+  load_messages
   without_layout :book_info
 end
 
@@ -23,10 +25,10 @@ get '/users/:employee_id/reserve/:isbn' do
   @book = Book.first(:isbn => params[:isbn])
   @user = User.first(:employee_id => params[:employee_id])
   not_found and return if @user.nil? || @book.nil?
-  @messages = YAML::load(File.read(File.expand_path('config/en.yml','.')))
   criteria = {:user => @user, :book => @book, :state => :issued}
   @reservation = get_reservation criteria
   @reservation.save
+  load_messages
   without_layout :reservation
 end
 
@@ -44,6 +46,10 @@ def without_layout template
 end
 
 private
+
+def load_messages
+  @messages = YAML::load(File.read(File.expand_path('config/en.yml','.')))
+end
 
 def get_reservation criteria
   reservation = Reservation.first(criteria)

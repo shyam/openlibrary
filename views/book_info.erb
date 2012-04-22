@@ -3,4 +3,11 @@
   <h2>You are holding the following book:</h2>
   <h3 class="title"><%= @book.title %></h2>
   <h3 class="author"><%= @book.author %></h3>
+  <p>
+    <% unless @reservation.nil? %>
+      <span><%= @reservation.user.full_name %></span> <%= @messages['user_review'] %>
+    <% else %>
+      <%= @messages['first_person'] %>
+    <% end %>
+  </p>
 </div>
