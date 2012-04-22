@@ -48,8 +48,6 @@ var AlertView = Backbone.View.extend({
 var ReservationView = Backbone.View.extend({
   initialize: function(options) {
     this.setElement($(".reservation:first"));
-    this._bookInfo = $(this.el).find(".book-info");
-    this._userInfo = $(this.el).find(".user-info")
     sections = $(this.el).find(".section");
     this.bookEl = this._getElement(sections, "book");
     this.userEl = this._getElement(sections, "user");
@@ -82,11 +80,12 @@ var ReservationView = Backbone.View.extend({
   getBookDetails: function(model, isbn) {
     if(!isbn) return;
     url = '/books/'+isbn;
-    bookXhr = $.getJSON(url, $.proxy(function(data) {
-      this._updateBookInfo(data);
-      this.promptUserDetails();
-    }, this));
-    bookXhr.error($.proxy(function() { this.model.bookNotValid(); }, this));
+    bookXhr = $.ajax({
+      url: url,
+      dataType: 'html',
+      success: $.proxy(function(xhrResponse) {this._updateBookInfo(xhrResponse); }, this),
+      error: $.proxy(function(xhr) { console.log(xhr); this.model.bookNotValid(); }, this)
+    });
   },
   promptUserDetails: function() {
     this.focus(this.userEl);
@@ -95,11 +94,11 @@ var ReservationView = Backbone.View.extend({
   getUserDetails: function(model, employee_id) {
     if(!employee_id) return;
     url = '/users/'+employee_id+'/reserve/'+model.get('isbn');
-    userXhr = $.getJSON(url, $.proxy(function(data){
-      this._updateUserInfo(data.user);
-      this.showConfirmation();
-    }, this));
-    userXhr.error($.proxy(function() { this.model.userNotValid(); }, this));
+    userXhr = $.ajax({
+      url: url,
+      success: $.proxy(function(xhrResponse){ this._updateUserInfo(xhrResponse); }, this),
+      error: $.proxy(function() { this.model.userNotValid(); }, this)
+    });
   },
   showConfirmation: function() {
     this.focus(this.confirmationEl);
@@ -130,12 +129,13 @@ var ReservationView = Backbone.View.extend({
     var currentSection = $(this.el).find('.section:visible');
     currentSection.find("input.barcode").val("");
   },
-  _updateUserInfo: function(user) {
-    this._userInfo.find(".name").html(user.first_name + ' ' + user.last_name);
+  _updateUserInfo: function(responseText) {
+    $(this.el).find(".user-info").replaceWith(responseText);
+    this.showConfirmation();
   },
-  _updateBookInfo: function(book) {
-    this._bookInfo.find(".title").html(book.title);
-    this._bookInfo.find(".author").html(book.author);
+  _updateBookInfo: function(responseText) {
+    $(this.el).find(".book-info").replaceWith(responseText);
+    this.promptUserDetails();
   },
   _getElement: function(elements, cssSelector) {
     return _.find(elements, function(element) { return $(element).hasClass(cssSelector); });

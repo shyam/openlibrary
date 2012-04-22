@@ -6,4 +6,8 @@ class User
   property :ad_name, String, :index => true, :required => true
   property :first_name, String, :required => true
   property :last_name, String, :required => true
+
+  def full_name
+    "#{first_name} #{last_name}"
+  end
 end
