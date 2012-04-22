@@ -15,7 +15,7 @@
   text-align: center;
 }
 
-.page.container .hero-unit.section { height: 180px; }
+.page.container .hero-unit.section { height: 240px; padding: 40px 60px;}
 
 .page.container .input {
   opacity: 0;
@@ -24,7 +24,7 @@
 }
 
 .book-info {
-  padding-top: 20px;
+  padding-top: 10px;
   border-top: solid 1px black;
 }
 
@@ -40,6 +40,8 @@
 .book-info .author:before {
   content: "Author :";
 }
+
+.book-info img { float: right; }
 
 .page.container .input .barcode {
   font-size: 40px;
