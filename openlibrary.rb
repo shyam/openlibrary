@@ -2,6 +2,7 @@ require 'rubygems'
 require 'sinatra'
 require 'sinatra/content_for'
 require 'yaml'
+require 'json'
 require './database'
 
 set :environment, :production
@@ -18,11 +19,14 @@ get '/books/:isbn' do
   book.to_json
 end
 
-get '/users/:employee_id' do
-  content_type :json
-  user = User.first(:employee_id => params[:employee_id]);
-  not_found and return if user.nil?
-  user.to_json
+get '/users/:employee_id/reserve/:isbn' do
+  book = Book.first(:isbn => params[:isbn])
+  user = User.first(:employee_id => params[:employee_id])
+  not_found and return if user.nil? || book.nil?
+  criteria = {:user => user, :book => book, :state => :issued};
+  reservation = get_reservation criteria
+  reservation.save
+  {:user => user, :reservation => reservation}.to_json
 end
 
 def with_base_layout template, options={}
@@ -32,4 +36,13 @@ end
 
 def with_plain_layout template, options={}
   erb template, options.merge(:layout => :'layout/plain')
+end
+
+private
+
+def get_reservation criteria
+  reservation = Reservation.first(criteria)
+  reservation.forward! unless reservation.nil?
+  reservation ||= Reservation.create(criteria)
+  return reservation
 end

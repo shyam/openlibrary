@@ -94,9 +94,9 @@ var ReservationView = Backbone.View.extend({
   },
   getUserDetails: function(model, employee_id) {
     if(!employee_id) return;
-    url = '/users/'+employee_id;
+    url = '/users/'+employee_id+'/reserve/'+model.get('isbn');
     userXhr = $.getJSON(url, $.proxy(function(data){
-      this._updateUserInfo(data);
+      this._updateUserInfo(data.user);
       this.showConfirmation();
     }, this));
     userXhr.error($.proxy(function() { this.model.userNotValid(); }, this));
