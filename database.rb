@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'data_mapper'
+require 'dm-timestamps'
 require 'dm-is-state_machine'
 
 DataMapper::Logger.new($stdout, :debug)
