@@ -21,6 +21,10 @@ get '/books/:isbn' do
   without_layout :book_info
 end
 
+get '/donate' do
+  with_plain_layout :donate
+end
+
 get '/users/:employee_id/reserve/:isbn' do
   @book = Book.first(:isbn => params[:isbn])
   @user = User.first(:employee_id => params[:employee_id])
