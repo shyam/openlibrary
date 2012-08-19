@@ -41,7 +41,7 @@
   content: "Author :";
 }
 
-.book-info img { float: right; }
+.book-info img { height: 160px; float: right; }
 .book-info p { padding-top: 10px;}
 
 .page.container .input .barcode {

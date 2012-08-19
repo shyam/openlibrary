@@ -10,5 +10,5 @@ namespace :db do
     require './database'
     DataMapper.auto_migrate!
   end
-  
+
 end
