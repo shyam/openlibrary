@@ -9,12 +9,12 @@ set :environment, :production
 set :logging, true
 
 get '/' do
-	with_plain_layout :index
+  with_plain_layout :index
 end
 
 get '/books/:isbn' do
   content_type :json
-  @book = Book.first(:isbn => params[:isbn])
+  load_book
   not_found and return if @book.nil?
   @reservation = Reservation.last(:book => @book)
   load_messages
@@ -26,19 +26,23 @@ get '/donate' do
 end
 
 get '/users/:employee_id/reserve/:isbn' do
-  @book = Book.first(:isbn => params[:isbn])
-  @user = User.first(:employee_id => params[:employee_id])
+  load_user_and_book
+  load_messages
   not_found and return if @user.nil? || @book.nil?
   criteria = {:user => @user, :book => @book, :state => :issued}
   @reservation = get_reservation criteria
   @reservation.save
-  load_messages
   without_layout :reservation
 end
 
+def send_reserved_msg
+  email = Email.new(@user, @book)
+  email.send_reserved_msg
+end
+
 def with_base_layout template, options={}
-	@menu_items = YAML::load(File.read(File.expand_path('config/menu.yml','.')))
-	erb template, options.merge(:layout => :'layout/base')
+  @menu_items = YAML::load(File.read(File.expand_path('config/menu.yml','.')))
+  erb template, options.merge(:layout => :'layout/base')
 end
 
 def with_plain_layout template, options={}
@@ -50,6 +54,19 @@ def without_layout template
 end
 
 private
+
+def load_user_and_book
+  load_user
+  load_book
+end
+
+def load_user
+  @user = User.first(:employee_id => params[:employee_id])
+end
+
+def load_book
+  @book = Book.first(:isbn => params[:isbn])
+end
 
 def load_messages
   @messages = YAML::load(File.read(File.expand_path('config/en.yml','.')))
