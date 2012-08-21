@@ -9,9 +9,12 @@ class Email
     @book = book
   end
 
-  def send_reserved_msg
-    return unless @to.employee_id == 13079
-    send_email 'You have taken a book from library', 'reserve'
+  def send_issued_msg
+    send_email 'You have taken a book from library', 'issued'
+  end
+
+  def send_returned_msg
+    send_email 'You have placed the book back in the library', 'returned'
   end
 
   private
@@ -22,6 +25,7 @@ class Email
   end
 
   def send_email mail_subject, template
+    return unless @to.employee_id == 13079
     renderer = ERB.new get_erb_content(template)
     to_address = "#{@to.employee_id}@thoughtworks.com"
     mail_body = renderer.result(binding)
@@ -34,8 +38,9 @@ class Email
         content_type 'text/html; charset=UTF-8'
         body mail_body
       end
+      delivery_method :sendmail
     end
-    p mail.to_s
+    mail.deliver
   end
 
 end

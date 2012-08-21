@@ -32,12 +32,8 @@ get '/users/:employee_id/reserve/:isbn' do
   criteria = {:user => @user, :book => @book, :state => :issued}
   @reservation = get_reservation criteria
   @reservation.save
+  send("send_#{@reservation.state}_msg")
   without_layout :reservation
-end
-
-def send_reserved_msg
-  email = Email.new(@user, @book)
-  email.send_reserved_msg
 end
 
 def with_base_layout template, options={}
@@ -54,6 +50,16 @@ def without_layout template
 end
 
 private
+
+def send_issued_msg
+  email = Email.new(@user, @book)
+  email.send_issued_msg
+end
+
+def send_returned_msg
+  email = Email.new(@user, @book)
+  email.send_returned_msg
+end
 
 def load_user_and_book
   load_user
