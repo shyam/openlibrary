@@ -25,7 +25,6 @@ class Email
   end
 
   def send_email mail_subject, template
-    return unless @to.employee_id == 13079
     renderer = ERB.new get_erb_content(template)
     to_address = "#{@to.employee_id}@thoughtworks.com"
     mail_body = renderer.result(binding)
