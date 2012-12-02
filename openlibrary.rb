@@ -1,8 +1,8 @@
 require 'rubygems'
-require 'sinatra'
+require 'bundler'
+Bundler.require
+
 require 'sinatra/content_for'
-require 'yaml'
-require 'json'
 require './database'
 
 set :environment, :production
@@ -71,7 +71,7 @@ def load_user
 end
 
 def load_book
-  @book = Book.first(:isbn => params[:isbn])
+  @book = Book.first(:isbn => params[:isbn]) || Book.create_from_openlibrary(params[:isbn])
 end
 
 def load_messages
