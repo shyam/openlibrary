@@ -1,7 +1,6 @@
 require 'rubygems'
-require 'data_mapper'
-require 'dm-timestamps'
-require 'dm-is-state_machine'
+require 'bundler'
+Bundler.require
 
 DataMapper::Logger.new($stdout, :debug)
 DataMapper.setup(:default, 'mysql://root@localhost/openlibrary_dev')

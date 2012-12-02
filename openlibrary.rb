@@ -1,8 +1,8 @@
 require 'rubygems'
-require 'sinatra'
+require 'bundler'
+Bundler.require
+
 require 'sinatra/content_for'
-require 'yaml'
-require 'json'
 require './database'
 
 set :environment, :production
