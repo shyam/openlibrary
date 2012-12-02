@@ -43,7 +43,7 @@ var AlertView = Backbone.View.extend({
   hideAlert: function() {
     $(this.el).fadeOut();
   }
-})
+});
 
 var ReservationView = Backbone.View.extend({
   initialize: function(options) {
@@ -106,7 +106,7 @@ var ReservationView = Backbone.View.extend({
     this._highlightHelp();
   },
   focus: function(section) {
-    var deFocusedElements = _.reject([this.userEl, this.bookEl, this.confirmationEl], function(element) { return element == section });
+    var deFocusedElements = _.reject([this.userEl, this.bookEl, this.confirmationEl], function(element) { return element == section; });
     _.each(deFocusedElements, $.proxy(function(element) { $(element).hide(); }, this));
     $(section).fadeIn();
     $(section).find("input.barcode").focus();
@@ -159,6 +159,6 @@ function newReservation() {
   view = new ReservationView({model: reservation});
   alert = new AlertView({model: reservation});
   reservation.read();
-};
+}
 
 $(function() { newReservation(); });
