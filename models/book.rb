@@ -13,7 +13,7 @@ class Book
     details = ::Openlibrary::Data.find_by_isbn(isbn)
     return unless details
     params = {}.tap do |p|
-      p[:isbn]   = details.identifiers["isbn_13"][0]
+      p[:isbn]   = details.identifiers["isbn_13"] ? details.identifiers["isbn_13"][0] : isbn
       p[:title]  = details.title
       p[:author] = details.authors.map{|a| a["name"]}.join(", ") if details.authors
       p[:photo_remote_url] = details.cover["medium"] if details.cover
