@@ -12,8 +12,8 @@ get '/' do
   with_plain_layout :index
 end
 
-get '/books' do
-  @reservation = Reservation.first({:state => :issued})
+get '/issued-books' do
+  @reservations = Reservation.all({:state => :issued})
   with_base_layout :issued_books
 end
 
