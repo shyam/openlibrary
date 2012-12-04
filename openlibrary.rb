@@ -12,6 +12,11 @@ get '/' do
   with_plain_layout :index
 end
 
+get '/books' do
+  @reservation = Reservation.first({:state => :issued})
+  with_base_layout :issued_books
+end
+
 get '/books/:isbn' do
   content_type :json
   load_book

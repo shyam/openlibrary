@@ -1,0 +1,23 @@
+<% content_for :content do %>
+    <p><h3>Issued books</h3></p>
+    <table class="table table-hover">
+      <% unless @reservation.nil? %>
+          <thead>
+          <tr>
+            <th>Book Title</th>
+            <th>Book Author</th>
+            <th>Issue to</th>
+            <th>Issued On</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td><%= @reservation.book.title %></td>
+            <td><%= @reservation.book.author %></td>
+            <td><%= @reservation.user.full_name %></td>
+            <td><%= @reservation.created_on.strftime('%d/%m/%Y') %></td>
+          </tr>
+          </tbody>
+      <% end %>
+    </table>
+<% end %>
