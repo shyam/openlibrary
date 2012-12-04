@@ -1,7 +1,3 @@
 home:
   path: "/"
   display_name: "Home"
-  
-help:
-  path: "/help"
-  display_name: "Help"
