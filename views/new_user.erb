@@ -1,0 +1,41 @@
+<% content_for :javascript do %>
+    <script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#create_user_modal').modal({
+                show:true,
+                backdrop:'static'
+            });
+        });
+    </script>
+<% end %>
+
+<% content_for :content do %>
+
+    <div id="create_user_modal" class="modal hide fade" role="dialog">
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal">&times;</a>
+
+        <h3>New User</h3>
+      </div>
+
+      <form action="/user/create" method="POST" class="form-inline">
+        <div class="modal-body">
+          <% if flash.has_key?(:success) %>
+              <p class="alert-success"><strong><%= flash[:success] %> </strong></p>
+          <% end %>
+          <% if flash.has_key?(:error) %>
+              <p class="alert-error"><strong><%= flash[:error] %> </strong></p>
+          <% end %>
+          <input type="text" name="user[employee_id]" placeholder="Employee ID" class="input-small">
+          <input type="text" name="user[first_name]" placeholder="First Name" class="input-medium">
+          <input type="text" name="user[last_name]" placeholder="Last Name" class="input-medium">
+        </div>
+        <div class="modal-footer">
+          <input type="submit" value="Create" class="btn btn-primary">
+          <button class="btn" data-dismiss="modal">Close</button>
+        </div>
+      </form>
+    </div>
+<% end %>

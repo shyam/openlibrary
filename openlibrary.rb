@@ -3,10 +3,12 @@ require 'bundler'
 Bundler.require
 
 require 'sinatra/content_for'
+require 'sinatra/flash'
 require './database'
 
 set :environment, :production
 set :logging, true
+enable :sessions
 
 get '/' do
   with_plain_layout :index
@@ -25,6 +27,21 @@ get '/books/:isbn' do
   load_messages
   without_layout :book_info
 end
+
+get '/user/new' do
+  with_base_layout :new_user
+end
+
+post '/user/create' do
+  user = User.create(params[:user])
+  if user.errors.empty?
+    flash[:success] = "Successfully created user !!!"
+  else
+    flash[:error] = user.errors.full_messages.join(", ")
+  end
+  redirect '/user/new'
+end
+
 
 get '/donate' do
   with_plain_layout :donate
