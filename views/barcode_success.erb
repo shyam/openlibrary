@@ -1,0 +1,33 @@
+<% content_for :javascript do %>
+    <script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#barcode_success').modal({
+                show:true,
+                backdrop:'static'
+            });
+            $('#barcode_success').on('hidden', function () {
+                window.location = "/";
+            })
+        });
+
+    </script>
+<% end %>
+
+<% content_for :content do %>
+
+    <div id="barcode_success" class="modal hide fade" role="dialog">
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal">&times;</a>
+
+        <h3>Barcode Generator</h3>
+      </div>
+      <div class="modal-body">
+        <h3 class="alert-success">We are processing your request and will keep you posted through email.</h3>
+      </div>
+      <div class="modal-footer">
+        <a href="/" data-dismiss="modal" class="btn btn-primary">Close</a>
+      </div>
+    </div>
+<% end %>

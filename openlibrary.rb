@@ -32,6 +32,15 @@ get '/user/new' do
   with_base_layout :new_user
 end
 
+get '/barcode/:employee_id/create' do
+  Process.detach(barcode_job)
+  redirect '/barcode/success'
+end
+
+get '/barcode/success' do
+  with_base_layout :barcode_success
+end
+
 post '/user/create' do
   user = User.create(params[:user])
   if user.errors.empty?
@@ -72,6 +81,15 @@ def without_layout template
 end
 
 private
+
+def barcode_job
+  fork do
+    load_user
+    exec "sh ./create_barcode.sh #{params[:employee_id]}"
+    email = Email.new(@user, nil)
+    email.send_barcode_image
+  end
+end
 
 def send_issued_msg
   email = Email.new(@user, @book)
