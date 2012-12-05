@@ -1,0 +1,27 @@
+<% content_for :content do %>
+    <% if @reservations.any? %>
+        <p><h3>Issued books</h3></p>
+        <table class="table table-hover">
+          <thead>
+          <tr>
+            <th>Book Title</th>
+            <th>Book Author</th>
+            <th>Issued to</th>
+            <th>Issued On</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @reservations.each do |reservation| %>
+              <tr>
+                <td><%= reservation.book.title %></td>
+                <td><%= reservation.book.author %></td>
+                <td><%= reservation.user.full_name %></td>
+                <td><%= reservation.created_on.strftime('%d/%m/%Y') %></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+    <% else %>
+        <p class="lead"><h3>All the books are available in the Library !!!</h3></p>
+    <% end %>
+<% end %>

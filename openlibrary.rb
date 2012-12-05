@@ -3,13 +3,20 @@ require 'bundler'
 Bundler.require
 
 require 'sinatra/content_for'
+require 'sinatra/flash'
 require './database'
 
 set :environment, :production
 set :logging, true
+enable :sessions
 
 get '/' do
   with_plain_layout :index
+end
+
+get '/issued-books' do
+  @reservations = Reservation.all({:state => :issued})
+  with_base_layout :issued_books
 end
 
 get '/books/:isbn' do
@@ -20,6 +27,30 @@ get '/books/:isbn' do
   load_messages
   without_layout :book_info
 end
+
+get '/user/new' do
+  with_base_layout :new_user
+end
+
+get '/barcode/:employee_id/create' do
+  Process.detach(barcode_job)
+  redirect '/barcode/success'
+end
+
+get '/barcode/success' do
+  with_base_layout :barcode_success
+end
+
+post '/user/create' do
+  user = User.create(params[:user])
+  if user.errors.empty?
+    flash[:success] = "Successfully created user !!!"
+  else
+    flash[:error] = user.errors.full_messages.join(", ")
+  end
+  redirect '/user/new'
+end
+
 
 get '/donate' do
   with_plain_layout :donate
@@ -50,6 +81,15 @@ def without_layout template
 end
 
 private
+
+def barcode_job
+  fork do
+    load_user
+    exec "sh ./create_barcode.sh #{params[:employee_id]}"
+    email = Email.new(@user, nil)
+    email.send_barcode_image
+  end
+end
 
 def send_issued_msg
   email = Email.new(@user, @book)
