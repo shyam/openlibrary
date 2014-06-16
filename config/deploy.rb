@@ -1,5 +1,5 @@
 set :application, "openlibrary"
-set :repository,  "git://github.com/cs3/openlibrary.git"
+set :repository,  "git://github.com/shyam/openlibrary.git"
 set :user, "deploy"
 
 set :scm, :git # You can set :scm explicitly or Capistrano will make an intelligent guess based on known version control directory names
